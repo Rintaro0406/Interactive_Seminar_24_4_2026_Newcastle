@@ -1,8 +1,9 @@
 streamlit
-cython
-ipykernel
-healpy
-matplotlib
 numpy
 scipy
-jax
+matplotlib
+healpy
+qrcode
+camb
+glass
+classy

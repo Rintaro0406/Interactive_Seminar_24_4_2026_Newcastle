@@ -864,8 +864,32 @@ with tab2:
 
         # Load Planck 2018 TT data
         show_obs_data = st.checkbox("Show Planck 2018 TT Data", value=False)
-        planck_data = np.loadtxt(
-            '../data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
+        planck_data = np.loadtxt('../data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
+        ell_data = planck_data[:, 0]
+        cl_data = planck_data[:, 1]
+        cl_err_plus = planck_data[:, 2]
+        cl_err_minus = planck_data[:, 3]
+
+        # Downsample Planck data
+        # Downsample CLASS prediction
+        step = 25
+        ell_sampled = ell_data[::step]
+        cl_sampled = cl_data[::step]
+        cl_err_plus_sampled = cl_err_plus[::step]
+        cl_err_minus_sampled = cl_err_minus[::step]
+
+        # Convert CLASS prediction to [μK^2]
+        T0 = 2.7255 * 1e6  # [K^2] to [μK^2]
+        cl_tt = cl_tt * T0**2  # [μK^2]
+
+        # Contribution toggles
+        show_contributions = st.checkbox("Show Contributions", value=False)
+        M = Class()
+        # Compute contributions
+        if show_contributions:
+            M.empty()
+            M.set(common_settings)
+                  '../data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
         ell_data = planck_data[:, 0]
         cl_data = planck_data[:, 1]
         cl_err_plus = planck_data[:, 2]
@@ -1068,69 +1092,46 @@ with tab2:
                              new=True, verbose=False)
 
         # Button to toggle mask application
-        #st.markdown("""
-         #           ‼️ The mask is only applied to the CMB map, not the power spectrum.
-        #"")
-        #apply_mask = st.checkbox("Apply Planck 2018 UT78 Mask", value=False)
+        st.markdown("""
+                    ‼️ The mask is only applied to the CMB map, not the power spectrum.
+        """)
+        apply_mask = st.checkbox("Apply Planck 2018 UT78 Mask", value=False)
 
         #if apply_mask:
-         #   # === Load Planck 2018 UT78 Mask ===
-          #  mask_path = "/Users/r.kanaki/code/lunch_seminar/Data/COM_Mask_CMB-common-Mask-int_2048_R3.00.fits"
-           # mask_2048 = hp.read_map(mask_path, verbose=False)
-
-            # Downgrade mask to match the map nside
-            #mask = hp.ud_grade(mask_2048, nside_out=nside)
-            #mask = np.where(mask > 0.9, 1, 0)  # Binarize mask
-
-            # === Apply mask ===
-            #cmb_map_masked = cmb_map * mask
-            # Set masked pixels to hp.UNSEEN so they appear as background in the plot
-            #cmb_map_masked[mask == 0] = hp.UNSEEN
-
-            # Plot the masked CMB map
-            #fig = plt.figure(figsize=(8, 6))
-            #hp.mollview(cmb_map_masked, title='CMB Map with Planck 2018 UT78 Mask',
-             #           unit='μK', cmap='jet', fig=fig.number)
-            #hp.graticule()
-        #else:
-            # Plot the unmasked CMB map
-        fig = plt.figure(figsize=(8, 6))
-        hp.mollview(cmb_map, title='Simulated CMB map from CLASS $C_{\ell}^{TT}$', unit='μK', cmap='jet', fig=fig.number)
-        hp.graticule()
-
-        st.pyplot(fig)
-        st.markdown("""
-
-        ### Controls:
-
-        - **Resolution ($n_{\text{side}}$)**  
-        → Adjust how detailed the map is  
-        👉 Higher values show finer structures  
+           # # === Load Planck 2018 UT78 Mask ===
+            mask_path = "/Users/r.kanaki/code/lunc#_seminar/Data#/COM_Mask_CMB-common-Mask-int_2048_R3.00.fits"
+\text{side}}$)**  
+        → Adju#st how detailed the map i#s  
+        👉 Higher values show finer structures # 
 
         - **Mask (optional)**  
-        → Removes regions contaminated by foreground signals (e.g. our Galaxy)  
+        → Removes regions contaminated by foreground signals (e.g. our Galaxy)#  
         👉 Helps isolate the true cosmological signal  
+
+        - **[Planck 2018 UT78 Mask](https://pla.esac.esa.in#t/pla/#home)**  
+        → A standard mask used to clean the# sky from foreground contamination  
+
         ---
         """)
-        left_column_CMB_3, right_column_CMB_3 = st.columns(2)
+        left_column_CMB_3, right_colu#mn_CMB_3 = st.columns(2)
         with left_column_CMB_3:
             st.markdown("""
-            ### What you will learn from this map:
+            ### What you will learn from this m#ap:
 
             - How the CMB looks across the whole sky  
-            - How small the fluctuations really are  
-            - How structure in today’s Universe began from tiny differences  
+            - How small the fluc#tuations really are  
+            - How struct#ure in today’s Universe began from tiny differences  
 
-            ### What you see in the map:
+            ### What you see in# the map:
 
-            - Colors represent temperature differences:
-            - **Red** → slightly hotter regions  
-            - **Blue** → slightly colder regions  
+            - Colors represent temperature differenc#es:
+            - **Red*#* → slightly hotter regions  
+            - **Blue** → stly colder regions  
 
-            👉 These differences are extremely small:  
+            👉 Theseferences are 
             only about **±0.0001 K** around the average temperature (2.7 K)
             """)
-        with right_column_CMB_3:
+        with rigolumn_CMB_3:
             st.markdown("""
             ### Key idea:
 
@@ -1141,10 +1142,7 @@ with tab2:
             ### Simulation vs reality
 
             - This map is **simulated** using the theoretical power spectrum from [CLASS](http://class-code.net/)  
-            - Real observations (e.g. Planck) look remarkably similar  
-
-            👉 This agreement is one of the strongest successes of modern cosmology
-            👉 How do we compare this(Hint previous plot.)
+            - Real observationss(Hint previous plot.)
             """)
 
         st.markdown("---")

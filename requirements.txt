@@ -16,4 +16,4 @@ plotly
 bokeh
 jax
 seaborn
-sklearn
+scikit-learn

@@ -17,14 +17,14 @@ This repository contains materials for the AstroObs interactive seminar (April 2
 
 - **Scan to open the app:** If you have a QR image for the application link, place it at `assets/qr_app_link.png` and it will be displayed here. You can embed it as a link to the running app using the following Markdown (replace <APP_URL> with the app URL):
 
-  [![QR code for the app](assets/qr_app_link.png)](<https://interactiveseminar2442026newcastle-q7bxxkdrwkxxefeujetafd.streamlit.app/>)
+  [![QR code for the app](assets/qr_code_app.png)](https://interactiveseminar2442026newcastle-q7bxxkdrwkxxefeujetafd.streamlit.app/)
 
 ## How to run
 
-1. Clone the repository (replace <repository-url> with this repo's URL):
+1. Clone the repository:
 
     ```bash
-    git clone <repository-url>
+    git clone git@github.com:Rintaro0406/Interactive_Seminar_24_4_2026_Newcastle.git
     cd interactive_seminar_24_4_2026
     ```
 

@@ -1068,36 +1068,35 @@ with tab2:
                              new=True, verbose=False)
 
         # Button to toggle mask application
-        st.markdown("""
-                    ‼️ The mask is only applied to the CMB map, not the power spectrum.
-        """)
-        apply_mask = st.checkbox("Apply Planck 2018 UT78 Mask", value=False)
+        #st.markdown("""
+         #           ‼️ The mask is only applied to the CMB map, not the power spectrum.
+        #"")
+        #apply_mask = st.checkbox("Apply Planck 2018 UT78 Mask", value=False)
 
-        if apply_mask:
-            # === Load Planck 2018 UT78 Mask ===
-            mask_path = "/Users/r.kanaki/code/lunch_seminar/Data/COM_Mask_CMB-common-Mask-int_2048_R3.00.fits"
-            mask_2048 = hp.read_map(mask_path, verbose=False)
+        #if apply_mask:
+         #   # === Load Planck 2018 UT78 Mask ===
+          #  mask_path = "/Users/r.kanaki/code/lunch_seminar/Data/COM_Mask_CMB-common-Mask-int_2048_R3.00.fits"
+           # mask_2048 = hp.read_map(mask_path, verbose=False)
 
             # Downgrade mask to match the map nside
-            mask = hp.ud_grade(mask_2048, nside_out=nside)
-            mask = np.where(mask > 0.9, 1, 0)  # Binarize mask
+            #mask = hp.ud_grade(mask_2048, nside_out=nside)
+            #mask = np.where(mask > 0.9, 1, 0)  # Binarize mask
 
             # === Apply mask ===
-            cmb_map_masked = cmb_map * mask
+            #cmb_map_masked = cmb_map * mask
             # Set masked pixels to hp.UNSEEN so they appear as background in the plot
-            cmb_map_masked[mask == 0] = hp.UNSEEN
+            #cmb_map_masked[mask == 0] = hp.UNSEEN
 
             # Plot the masked CMB map
-            fig = plt.figure(figsize=(8, 6))
-            hp.mollview(cmb_map_masked, title='CMB Map with Planck 2018 UT78 Mask',
-                        unit='μK', cmap='jet', fig=fig.number)
-            hp.graticule()
-        else:
+            #fig = plt.figure(figsize=(8, 6))
+            #hp.mollview(cmb_map_masked, title='CMB Map with Planck 2018 UT78 Mask',
+             #           unit='μK', cmap='jet', fig=fig.number)
+            #hp.graticule()
+        #else:
             # Plot the unmasked CMB map
-            fig = plt.figure(figsize=(8, 6))
-            hp.mollview(
-                cmb_map, title='Simulated CMB map from CLASS $C_{\ell}^{TT}$', unit='μK', cmap='jet', fig=fig.number)
-            hp.graticule()
+        fig = plt.figure(figsize=(8, 6))
+        hp.mollview(cmb_map, title='Simulated CMB map from CLASS $C_{\ell}^{TT}$', unit='μK', cmap='jet', fig=fig.number)
+        hp.graticule()
 
         st.pyplot(fig)
         st.markdown("""
@@ -1111,10 +1110,6 @@ with tab2:
         - **Mask (optional)**  
         → Removes regions contaminated by foreground signals (e.g. our Galaxy)  
         👉 Helps isolate the true cosmological signal  
-
-        - **[Planck 2018 UT78 Mask](https://pla.esac.esa.int/pla/#home)**  
-        → A standard mask used to clean the sky from foreground contamination  
-
         ---
         """)
         left_column_CMB_3, right_column_CMB_3 = st.columns(2)

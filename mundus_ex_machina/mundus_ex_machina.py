@@ -9,6 +9,7 @@ from io import BytesIO
 from matplotlib.patches import FancyArrowPatch
 from scipy import interpolate
 from scipy import integrate
+from pathlib import Path
 import glass
 import matplotlib.ticker as ticker
 import camb
@@ -864,7 +865,8 @@ with tab2:
 
         # Load Planck 2018 TT data
         show_obs_data = st.checkbox("Show Planck 2018 TT Data", value=False)
-        planck_data = np.loadtxt('../data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
+        data_path = Path(__file__).resolve().parents[1] / 'data' / 'COM_PowerSpect_CMB-TT-full_R3.01.txt'
+        planck_data = np.loadtxt(str(data_path))
         ell_data = planck_data[:, 0]
         cl_data = planck_data[:, 1]
         cl_err_plus = planck_data[:, 2]

@@ -60,14 +60,14 @@ If you'd like, I can add the QR image you uploaded into `assets/qr_app_link.png`
 # Important links
 
 ### Visualization packages
-- **Matplotlib:** [https://matplotlib.org/](https://matplotlib.org/) — A mature 2D plotting library for publication-quality figures, animations, and interactive use in notebooks.
+- **Matplotlib:** [https://matplotlib.org/](https://matplotlib.org/) — A mature plotting library for publication-quality figures, animations, and interactive use in notebooks.
 - **Streamlit:** [https://streamlit.io/](https://streamlit.io/) — Simple framework for building interactive data apps and dashboards with minimal code.
 - **Plotly:** [https://plotly.com/](https://plotly.com/) — Interactive, web-ready plotting library (Plotly.py) for rich graphs and dashboards.
 - **Dash:** [https://dash.plotly.com/](https://dash.plotly.com/) — Framework for building analytical web applications using Plotly visualizations and React components.
 - **Bokeh:** [https://bokeh.org/](https://bokeh.org/) — Library for creating interactive, browser-based visualizations with high-performance streaming.
 
 ### Cosmology & astrophysics packages
-- **healpy:** [https://healpy.readthedocs.io/en/latest/](https://healpy.readthedocs.io/en/latest/) — Python interface to HEALPix for working with full-sky maps (CMB, foregrounds) and spherical harmonics.
+- **healpy:** [https://healpy.readthedocs.io/en/latest/](https://healpy.readthedocs.io/en/latest/) — Python interface to HEALPix for working with full-sky maps (CMB, foregrounds, geophysics) and spherical harmonics.
 - **CLASS:** [http://class-code.net/](http://class-code.net/) — Boltzmann solver for computing cosmological observables (CMB, matter power spectra); often used via `classy` Python wrapper.
-- **CAMB:** [https://camb.info/](https://camb.info/) — Code for Anisotropies in the Microwave Background; alternative Boltzmann solver for linear matter/CMB calculations.
-- **GLASS:** [https://glass.readthedocs.io/stable/index.html](https://glass.readthedocs.io/stable/index.html) — Tools for glass/galaxy lensing and survey simulations (check project docs for specific modules).
+- **CAMB:** [https://camb.info/](https://camb.info/) — Code for Anisotropies in the Microwave Background; alternative Boltzmann solver for matter fluctuation/CMB calculations.
+- **GLASS:** [https://glass.readthedocs.io/stable/index.html](https://glass.readthedocs.io/stable/index.html) — Tools for galaxy/graviational lensing and survey simulations (check project docs for specific modules).

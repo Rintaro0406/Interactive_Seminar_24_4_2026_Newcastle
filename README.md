@@ -17,7 +17,7 @@ This repository contains materials for the AstroObs interactive seminar (April 2
 
 - **Scan to open the app:** If you have a QR image for the application link, place it at `assets/qr_app_link.png` and it will be displayed here. You can embed it as a link to the running app using the following Markdown             
 
-  [<img src="assets/qr_code_app.png" width="240"/>](https://interactiveseminar2442026newcastle-q7bxxkdrwkxxefeujetafd.streamlit.app/)
+  [<img src="./assets/qr_code_app.png" width="240"/>](https://interactiveseminar2442026newcastle-q7bxxkdrwkxxefeujetafd.streamlit.app/)
 
 ## How to run
 

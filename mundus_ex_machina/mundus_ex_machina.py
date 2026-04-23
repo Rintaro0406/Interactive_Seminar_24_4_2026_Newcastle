@@ -17,6 +17,7 @@ import camb
 from cosmology import Cosmology
 import glass
 import glass.ext.camb
+from scipy.special import j0, jv
 
 # Set up the Streamlit page
 st.set_page_config(page_title="Mundus Ex Machina", layout="wide")
@@ -113,18 +114,6 @@ with right_col:
     I also read this book when I was a child, and it gives my interest in physics and cosmology.
     """)
 
-
-# Generate QR Code for the app
-st.sidebar.header("QR Code")
-app_url = "http://localhost:8501"  # Future I will deploy this app on the server
-qr = qrcode.QRCode()
-qr.add_data(app_url)
-qr.make(fit=True)
-img = qr.make_image(fill="black", back_color="white")
-buffer = BytesIO()
-img.save(buffer, format="PNG")
-st.sidebar.image(buffer.getvalue(), caption="Scan to Open App",
-                 use_column_width=True)
 
 # Initialize CLASS
 cosmo = Class()
@@ -366,6 +355,8 @@ with tab1:
 
         if show_answer_dist:
             st.markdown(r"""
+            ---
+                        
             ### ✅ Answer
 
             #### 1. Angular Diameter Distance
@@ -458,7 +449,8 @@ with tab1:
         fig, ax = plt.subplots(figsize=(7, 5))
         ax.plot(a_plot, rho_r, label=r'$\Omega_r(a)$ (Radiation)',
                 color='orange', lw=2, linestyle='-.')
-        ax.plot(a_plot, rho_m, label=r'$\Omega_m(a)$ (Matter)', color='green', lw=2, linestyle='-')
+        ax.plot(a_plot, rho_m, label=r'$\Omega_m(a)$ (Matter)',
+                color='green', lw=2, linestyle='-')
         ax.plot(a_plot, rho_L, label=r'$\Omega_\Lambda(a)$ (Dark Energy)',
                 color='purple', lw=2, linestyle='--')
         ax.set_xscale('log')
@@ -504,6 +496,8 @@ with tab1:
 
         if show_answer:
             st.markdown(r"""
+            ---
+                        
             ### ✅ Answer
 
             #### 1. Mathematical behaviour of each component
@@ -669,6 +663,8 @@ with tab1:
         show_answer_sf = st.checkbox("Show Answer (Scale Factor Evolution)")
         if show_answer_sf:
             st.markdown(r"""
+            ---
+                        
             ### ✅ Answer
 
             The evolution of $a(t)$ depends on which component dominates the energy density.
@@ -808,27 +804,19 @@ with tab2:
         ### Why is the CMB evidence for the Big Bang?
 
         The Big Bang model predicts that the early Universe was:
-
         - **Hot**
-
         - **Dense**
-
         - Filled with radiation and particles in thermal equilibrium  
 
         As the Universe expanded, it cooled down. Eventually:
-
         - Electrons and protons combined into neutral atoms  
-
         - Light was able to travel freely for the first time  
 
         👉 This moment is called **recombination**.
 
         If this picture is correct, we should still observe this radiation today, but:
-
         - Stretched by cosmic expansion  
-
         - Cooled from thousands of Kelvin  
-
         - Shifted into the **microwave** range  
 
         👉 This is exactly what we observe as the CMB (~2.7 K).
@@ -929,21 +917,24 @@ with tab2:
                 lw=1.8, color='blue', label='CLASS prediction')
 
         if show_contributions:
+            # Use distinct linestyles in addition to colour so
+            # colour-blind readers can distinguish the curves.
             ax.plot(ells, cl_TSW['tt'][2:] * ells * (ells + 1) * T0 **
-                    2 / (2 * np.pi), lw=1.8, color='black', label='TSW')
+                    2 / (2 * np.pi), lw=1.8, color='black', linestyle='-', label='TSW')
             ax.plot(ells, cl_eISW['tt'][2:] * ells * (ells + 1) * T0 **
-                    2 / (2 * np.pi), lw=1.8, color='green', label='eISW')
+                    2 / (2 * np.pi), lw=1.8, color='tab:green', linestyle='--', label='eISW')
             ax.plot(ells, cl_lISW['tt'][2:] * ells * (ells + 1) * T0 **
-                    2 / (2 * np.pi), lw=1.8, color='orange', label='lISW')
+                    2 / (2 * np.pi), lw=1.8, color='tab:orange', linestyle='-.', label='lISW')
             ax.plot(ells, cl_Doppler['tt'][2:] * ells * (ells + 1) * T0 **
-                    2 / (2 * np.pi), lw=1.8, color='purple', label='Doppler')
+                    2 / (2 * np.pi), lw=1.8, color='tab:purple', linestyle=':', label='Doppler')
 
         if show_obs_data:
             ax.errorbar(ell_sampled, cl_sampled, yerr=[
                         cl_err_plus_sampled, cl_err_minus_sampled], fmt='o', markersize=4, capsize=2, color='red', label='Planck 2018 TT')
 
         ax.set_xlabel(r'Multipole $\ell$', fontsize=16)
-        ax.set_ylabel(r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi\ [\mu K^2]$', fontsize=16)
+        ax.set_ylabel(
+            r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi\ [\mu K^2]$', fontsize=16)
         ax.grid(True, which='both', ls='--', alpha=0.4)
         ax.tick_params(labelsize=14)
         ax.legend(fontsize=16, loc='upper right', frameon=False)
@@ -1206,13 +1197,14 @@ with tab2:
         factor = 1.e10 * ell * (ell + 1.) / (2. * np.pi)
         factort = 1.e10 * ellt * (ellt + 1.) / (2. * np.pi)
 
-        ax.loglog(ell, factor * cls['tt'], 'r-', label=r'$\mathrm{TT(s)}$')
-        ax.loglog(ellt, factort * clt['tt'], 'r:', label=r'$\mathrm{TT(t)}$')
-        ax.loglog(ell, factor * cls['ee'], 'b-', label=r'$\mathrm{EE(s)}$')
-        ax.loglog(ellt, factort * clt['ee'], 'b:', label=r'$\mathrm{EE(t)}$')
-        ax.loglog(ellt, factort * clt['bb'], 'g:', label=r'$\mathrm{BB(t)}$')
-        ax.loglog(ell, factor * (cl_lensed['bb'] - clt['bb']),
-                  'g-', label=r'$\mathrm{BB(lensing)}$')
+        # Colourblind-friendly palette + distinct linestyles.
+        # Black for temperature (solid/dotted), blue for E-modes, orange for B-modes.
+        ax.loglog(ell, factor * cls['tt'], color="#000000", linestyle='-', lw=1.5, label=r'$\mathrm{TT(s)}$')
+        ax.loglog(ellt, factort * clt['tt'], color="#000000", linestyle=':', lw=1.5, label=r'$\mathrm{TT(t)}$')
+        ax.loglog(ell, factor * cls['ee'], color="#0072B2", linestyle='-', lw=1.5, label=r'$\mathrm{EE(s)}$')
+        ax.loglog(ellt, factort * clt['ee'], color="#0072B2", linestyle=':', lw=1.5, label=r'$\mathrm{EE(t)}$')
+        ax.loglog(ellt, factort * clt['bb'], color="#D55E00", linestyle=':', lw=1.5, label=r'$\mathrm{BB(t)}$')
+        ax.loglog(ell, factor * (cl_lensed['bb'] - clt['bb']), color="#D55E00", linestyle='--', lw=1.5, label=r'$\mathrm{BB(lensing)}$')
 
         ax.set_xlim([2, l_max_scalars])
         ax.set_ylim([1.e-8, 10])
@@ -1467,19 +1459,57 @@ with tab2:
 # galaxy clustering
 with tab3:
     st.header("Galaxy Clustering")
-    st.markdown(r"""
-    ### Matter Power Spectrum
-    This plot corresponds to Figure 8.14 in [Modern Cosmology](https://www.amazon.co.uk/Modern-Cosmology-Scott-Dodelson/dp/0128159480).
-    It shows the matter power spectrum $ P(k) $ as a function of wavenumber $k$, with options to include:
-    - **Halofit**: A semi-analytical model for the non-linear evolution of the matter power spectrum.
+    left_column_gal, right_column_gal = st.columns(2)
+    with left_column_gal:
+        st.markdown("""
+                    
+        ### Why study galaxy clustering?
 
-    #### Halofit:
-    - **[Halofit](https://arxiv.org/abs/1208.2701)**: A model for the non-linear matter power spectrum that incorporates the effects of halo formation and evolution.
-    - It is based on the idea that the matter power spectrum can be approximated by a sum of contributions from different halo masses.
-    - It provides a more accurate prediction of $ P(k) $ at small scales compared to linear theory.
-    """)
+        - Galaxies trace the underlying distribution of matter that grew from tiny primordial fluctuations(current universe, CMB is more early universe).
+        - On large scales, clustering statistics (like the matter power spectrum) reveal the physics of gravity, dark matter, and the growth of structure.
+        - On smaller scales, non-linear evolution, halo formation, and baryonic effects complicate the picture — we use models (e.g., Halofit, halo models) to interpret those scales.
+
+        ### Goals
+
+        - Explain the physical meaning of the matter power spectrum $P(k)$ and related observables.
+        - Demonstrate how linear theory differs from non-linear predictions (Halofit).
+        - Provide interactive controls so you can explore redshift dependence and non-linear effects.
+
+        ### What you will see
+
+        - A plotted matter power spectrum $P(k)$ across a wide range of scales ($k$). The plot compares the linear prediction and an optional non-linear (Halofit) model.
+        - A halo mass function estimate computed from the linear power spectrum to connect clustering to halo abundances.
+        """)
+
+    with right_column_gal:
+        st.markdown("""
+        ### Visualization and controls
+
+        - **Redshift slider**: changes the redshift used to evaluate $P(k)$ and the halo mass function — structure amplitude evolves with time.
+        - **Enable Halofit**: toggle to include a non-linear correction that better models small-scale power.
+        - Outputs are saved to the `plots/` folder so you can export figures for presentations or further analysis.
+
+        ### Physical interpretation (short)
+
+        - **Large scales (small $k$)** probe initial conditions and linear growth; predictions are robust.
+        - **Intermediate scales** show features such as the baryon acoustic oscillation (BAO) wiggles — a standard ruler for cosmic distances.
+        - **Small scales (large $k$)** are affected by non-linear clustering and astrophysical processes; models like Halofit approximate these effects.
+
+        ### Practical tips and experiment ideas
+
+        - Try varying redshift and compare linear vs Halofit to see where non-linear evolution matters most.
+        - Reduce the number of $k$ points if computation is slow, or use the Halofit toggle to compare model differences quickly.
+        - Use the halo mass function section to relate features in $P(k)$ to the abundance of massive halos.
+
+        """)
+
     use_gal = st.checkbox("Calculate Matter Power Spectrum", value=False)
     if use_gal:
+        st.header("Matter Power Spectrum")
+        st.markdown("""
+        The matter power spectrum $P(k)$ quantifies how matter fluctuations are distributed across spatial scales. Like CMB powerspectra, the distribution of matter is summarized into 2-point statistics, but now in **3D space** rather than on the 2D sky.
+        """)
+        st.markdown("---")
         # Slider for redshift
         redshift = st.slider("Redshift (z)", 0.0, 5.0, 0.0, step=0.1)
 
@@ -1523,10 +1553,32 @@ with tab3:
         ax.grid(True, which="both", linestyle="--", alpha=0.5)
         ax.legend()
         st.pyplot(fig)
+        st.markdown("""
+        ### What this plot shows:
+        - The amplitude of density fluctuations as a function of wavenumber $k$ (inverse scale). Small $k$ = large scales; large $k$ = small scales.
+        - A comparison between the **linear theory** prediction and an optional **non-linear** model (Halofit) that approximates late-time clustering.
+
+        ### Key concepts
+        - **Linear regime (large scales):** perturbations grow proportionally with the linear growth factor; predictions are robust and set by initial conditions.
+        - **BAO (Baryon Acoustic Oscillations):** small oscillatory features in $P(k)$ — a standard ruler used for distance measurements.
+        - **Non-linear regime (small scales):** gravitational collapse forms haloes and increases power; semi-analytical treatments (e.g. Halofit) are used to approximate this.
+
+        ### Controls and tips
+        - **Redshift slider:** changes the snapshot redshift used to compute $P(k)$; structure amplitude changes with time.
+        - **Enable Halofit:** toggle non-linear corrections to see where linear theory breaks down.
+        - **Accessibility:** linestyles are used in plots (solid/dashed) so colour-blind readers can distinguish curves.
+
+        ### Experiment ideas
+        - Compare linear vs Halofit across redshift to identify the scale where non-linearity becomes important.
+        - Zoom into the BAO region to observe the wiggles and their dependence on cosmological parameters.
+
+        ### References
+        - Halofit: https://arxiv.org/abs/1208.2701
+        """)
+        st.markdown("---")  
         st.header("Halo Mass Function")
         st.markdown("""
-        Compute the halo mass function using the Sheth–Tormen fit and the linear power spectrum from CLASS.
-        The redshift is controlled by the slider above.
+        The halo mass function (HMF) describes the number density of collapsed dark-matter haloes as a function of mass. It links the statistical properties of the initial density field to the abundance of bound structures today.
         """)
         with st.spinner("Computing halo mass function..."):
             # prepare k and linear power from CLASS at selected redshift
@@ -1608,88 +1660,154 @@ with tab3:
         ax.set_ylabel('dn/dlog10(M) [ (h^3 / Mpc^3) ]')
         ax.grid(which='both', ls='--', alpha=0.4)
         st.pyplot(fig)
+        st.markdown("""
 
-        st.header("Cluster Counts in Mass-Redshift Bins")
-        st.markdown(
-            "Compute expected cluster counts in mass-redshift bins for the full sky.")
-        with st.spinner("Computing cluster counts..."):
-            z_edges = np.linspace(0.0, 1.0, 11)
-            z_mid = 0.5 * (z_edges[:-1] + z_edges[1:])
-            M_edges = np.logspace(13, 16, 30)
-            M_mid = 0.5 * (M_edges[:-1] + M_edges[1:])
-            dM = np.diff(M_edges)
+        ### What this calculation does:
+        - Uses the linear matter power spectrum to compute the variance of fluctuations on different mass scales and then applies the Sheth–Tormen fit to estimate halo abundances.
 
-            c_kms = 299792.458
+        ### What you will learn from the plot:
+        - How the abundance of massive haloes drops steeply with mass.
+        - How redshift affects the abundance (higher redshift → fewer massive haloes).
 
-            def comoving_distance(zv):
-                return (1.0 + zv) * cosmo.angular_distance(zv)
+        ### Practical tips:
+        - The computation integrates over $k$ and can be slow; lower `k` resolution for faster results during exploration.
+        - The Sheth–Tormen fit is an empirical improvement over Press–Schechter and captures ellipsoidal collapse effects.
+        """)
+        st.markdown("---")
+        st.markdown("""
+        ### 📚 Further Reading & References
 
-            def H_of_z(zv):
-                return cosmo.Hubble(zv)
+        The calculations in this section are based on the **ΛCDM model**, the current standard model of cosmology.  
+        We compute theoretical predictions using the [CLASS Boltzmann solver](http://class-code.net/), a widely used tool in modern cosmology.
 
-            counts = np.zeros((len(z_mid), len(M_mid)))
-            for iz in range(len(z_mid)):
-                z1, z2 = z_edges[iz], z_edges[iz+1]
-                z_samples = np.linspace(z1, z2, 6)
-                dz = z_samples[1] - z_samples[0]
-                weight_z = np.ones_like(z_samples)
-                weight_z[0] = 0.5
-                weight_z[-1] = 0.5
-                for jz, zz in enumerate(z_samples):
-                    # growth
-                    try:
-                        D_zz = cosmo.scale_independent_growth_factor_f(zz)
-                    except Exception:
-                        D_zz = D_z * (1.0 / (1.0 + zz))  # rough fallback
-                    sigma_z_samples = sigma0 * D_zz
-                    sig_interp = interpolate.interp1d(
-                        np.log(M_vals), sigma_z_samples, kind='cubic', fill_value='extrapolate')
-                    sigma_mid = sig_interp(np.log(M_mid))
-                    slope_interp = interpolate.interp1d(
-                        np.log(M_vals), dlns_dlnM, kind='cubic', fill_value='extrapolate')
-                    slope_mid = slope_interp(np.log(M_mid))
-                    dn_dM_mid = sheth_tormen_dn_dM(M_mid, sigma_mid, slope_mid)
-                    Dc = comoving_distance(zz)
-                    Hz = H_of_z(zz)
-                    dV_dz = 4.0 * np.pi * Dc**2 * (c_kms / Hz)
-                    counts[iz] += dn_dM_mid * dM * dV_dz * weight_z[jz] * dz
+        ---
 
-        fig, ax = plt.subplots(figsize=(8, 4))
-        im = ax.pcolormesh(np.log10(M_edges), z_edges, counts,
-                           shading='auto', cmap='viridis')
-        ax.set_xlabel('log10(M [Msun/h])')
-        ax.set_ylabel('Redshift')
-        cbar = fig.colorbar(im, ax=ax)
-        cbar.set_label('Counts per bin (full sky)')
-        st.pyplot(fig)
+        ### 📖 Learn more
+
+        - *[Modern Cosmology by Scott Dodelson & Fabian Schmidt](https://www.amazon.co.uk/Modern-Cosmology-Scott-Dodelson/dp/0128159480)* — Scott Dodelson & Fabian Schmidt  
+
+            👉 A comprehensive introduction to the theory behind these plots  
+                    
+        - *[Revising the Halofit Model for the Nonlinear Matter Power Spectrum](https://arxiv.org/abs/1208.2701)* - Ryuichi Takahashi et al.
+                    
+            👉 The original paper describing the Halofit model for non-linear corrections to the matter power spectrum.
+                    
+        ### Further research and future update:
+        
+        - Matter powerspectrum is dark matter only, so it is not directly observable. We will add galaxy power spectrum in the future, which includes bias and redshift-space distortion.
+                    
+        - Cosmic void statistics, which probe underdense regions and provide complementary information to halo statistics.
+        """)
 
 
 # cosmic shear
 with tab4:
     st.header("Weak Lensing")
+    left_column_lens, right_column_lens = st.columns(2)
     st.markdown("""
-    This panel computes a log-normal weak-lensing convergence map using GLASS+CAMB.
-    The computation is heavy — enable and click **Run GLASS simulation** to execute.
-    """)
+    We do not yet know what dark matter is made of, but fortunately the Universe gives us a way to see its influence.
 
+    As light from distant galaxies travels toward us, gravity from intervening matter bends its path.  
+    This effect is called **gravitational lensing**.
+    """)
+    with left_column_lens:
+        st.markdown("""
+
+        ### Gravitational Lensing
+
+        Matter in the Universe acts a little like transparent glass in front of a lamp:
+
+        - the gravity of matter bends light rays, distorting the images of background galaxies,
+        - sometimes the lensing is strong enough to produce spectacular **arcs** or **multiple images**,
+        - but most of the time the effect is much smaller.
+
+        That tiny, statistical distortion is called **weak gravitational lensing**, or **cosmic shear**.
+
+        ### Weak Gravitational Lensing (Cosmic Shear)
+
+        Individual galaxies are already messy-looking, so we usually cannot tell from one galaxy alone whether lensing has distorted it.  
+        Instead, we look at **millions of galaxies** and search for a shared pattern of tiny alignments.
+
+        That pattern reveals the distribution of matter between us and the distant galaxies.
+
+        Two important quantities are:
+
+        - **Convergence**: how matter magnifies or de-magnifies the image; roughly a projected map of dark matter density.,
+        - **Shear**: how matter stretches galaxy images into preferred directions.
+
+        In other words, weak lensing lets us make a kind of **cosmic fingerprint of invisible matter**.
+                    
+        """)
+    with right_column_lens:
+        st.markdown("""
+                    
+        ### What this tool does
+
+        This section creates simulated weak-lensing data and shows:
+
+        - **redshift distributions** of source galaxies,
+        - **convergence maps** of projected matter,
+        - **shear maps** showing the distortion field,
+        - and **statistical summaries** such as power spectra and correlation functions.
+
+        ### Technical note
+
+        The simulation uses **[GLASS](https://glass.readthedocs.io/stable/index.html)**, **[CAMB](https://camb.readthedocs.io/en/latest/)**, and **[HEALPix](https://healpix.sourceforge.io/)** to build mock weak-lensing fields on the sky.  
+        Because this can be slow, the full simulation is optional.
+        """)
+    st.markdown("---")
     use_glass = st.checkbox(
         "Enable GLASS weak-lensing simulation (heavy)", value=False)
     if use_glass:
-        st.markdown("**Simulation settings**")
+        st.header("Simulation settings")
+        st.markdown("""
+        ### ⚙️ Controling Parameters for the Universe through Weak Lensing Simulation
+
+        Think of these as knobs in your cosmic kitchen:
+
+        """)
+        left_column_lens_2, right_column_lens_2 = st.columns(2)
+        with left_column_lens_2:
+            st.markdown("""
+            - **nside / lmax** → resolution of your dish  
+            (higher = finer details, slower cooking)
+
+            - **zmin / zmax** → how deep into the Universe you look  
+            (more distant ingredients → stronger lensing flavour)
+
+            - **z_mode** → where most galaxies sit  
+            (moves the “main ingredient” farther away)
+
+            - **nbins** → how many layers you slice your cosmic cake into  
+                        
+            """)
+        with right_column_lens_2:
+            st.markdown("""
+            - **n_gal / arcmin²** → number of galaxies  
+            (more data = smoother result)
+
+            - **dx** → thickness of each layer along the line of sight  
+
+            - **ncorr** → how strongly layers interact with each other  
+
+            💡 Start simple, then increase complexity once you like the taste.
+            """)
         col1, col2, col3 = st.columns(3)
         with col1:
             nside = st.selectbox("HEALPix nside", options=[
                                  64, 128, 256], index=0)
             lmax = st.number_input("lmax", value=3 * nside, step=1)
+            dx = st.number_input("dx [Mpc] (shell spacing)", value=200.0)
         with col2:
             zmin = st.number_input("zmin", value=0.0, format="%.2f")
             zmax = st.number_input("zmax", value=3.0, format="%.2f")
-            dx = st.number_input("dx [Mpc] (shell spacing)", value=200.0)
+            zmode = st.number_input("Smail dN/dz z_mode", value=0.9, format="%.2f")
         with col3:
             ncorr = st.number_input("ncorr", value=3, step=1)
             n_arcmin2 = st.number_input(
                 "n_gal / arcmin^2", value=0.03, format="%.3f")
             nbins = st.number_input("tomographic nbins", value=10, step=1)
+           
 
         run_button = st.button("Run GLASS simulation")
         if run_button:
@@ -1728,7 +1846,6 @@ with tab4:
                     kappa_map = convergence.kappa
                     gamm1_map, gamm2_map = glass.shear_from_convergence(
                         kappa_map)
-
                     # display maps
                     fig = plt.figure(figsize=(10, 6))
                     hp.mollview(kappa_map,
@@ -1742,13 +1859,115 @@ with tab4:
                                 sub=(1, 3, 2))
 
                     hp.mollview(gamm2_map,
-                                title=r"Shear $\gamma_2$",
-                                fig=fig,
-                                sub=(1, 3, 3))
-                    st.pyplot(fig)
+                            title=r"Shear $\gamma_2$",
+                            fig=fig,
+                            sub=(1, 3, 3))
+                    # Tomographic bins and redshift distributions (keep this plot)
+                    try:
+                        z = np.arange(zmin, zmax, 0.01)
+                        # simple Smail et al. model parameters (exposed minimally)
+                        alpha = st.slider("Smail dN/dz alpha", 0.5, 5.0, 2.0, step=0.1)
+                        beta = st.slider("Smail dN/dz beta", 0.5, 5.0, 1.5, step=0.1)
+                        sigma_z0 = st.slider("Tomographic sigma_z0", 0.01, 0.5, 0.1, step=0.01)
 
-                    # small power spectrum check
-                    with st.expander("Show convergence power spectrum"):
+                        dndz = glass.smail_nz(z, z_mode=zmode,
+                                              alpha=alpha, beta=beta)
+                        dndz = dndz * n_arcmin2
+
+                        nbins_int = int(nbins)
+                        zbins = glass.equal_dens_zbins(
+                            z, dndz, nbins=nbins_int)
+                        tomo_nz = glass.tomo_nz_gausserr(
+                            z, dndz, sigma_z0, zbins)
+                        st.markdown("---")
+                        st.header("Tomographic Redshift Distributions")
+                        fig3, ax3 = plt.subplots(figsize=(8, 4))
+                        for i in range(nbins_int):
+                            ax3.plot(z, (tomo_nz[i] / n_arcmin2) * nbins_int,
+                                     alpha=0.6, label=f"Input Bin {i}")
+                        ax3.plot(z, dndz / n_arcmin2 * nbins_int,
+                                 ls='--', c='k', label='Input Total Distribution')
+                        ax3.set_xlabel('Redshift z', fontsize=16)
+                        ax3.set_ylabel('Normalized dN/dz', fontsize=16)
+                        ax3.tick_params(axis='both', which='major', labelsize=14)
+                        ax3.legend(ncol=2, fontsize=12)
+                        ax3.grid(True, ls=':')
+                        st.pyplot(fig3)
+                        st.markdown("""
+
+                        To use weak lensing as a cosmological probe, we need to know **how far away galaxies are**.  
+                        However, for most galaxies we do not have precise spectroscopic measurements(more precise but we need to focus on the each single galaxy) — instead we estimate their distances using **photometric redshifts (photo-z)**.
+
+
+                        ### What is a photometric redshift?
+
+                        A **photometric redshift** estimates a galaxy’s distance using its observed colours (fluxes in different filters), rather than detailed spectra.
+
+                        - Fast and efficient → can be applied to **billions of galaxies**
+                        - Why fast? → only need a few broad-band measurements on wide fields instead of high-resolution spectra 
+                        - But less precise → each galaxy has **uncertainty in its redshift**
+
+                        ### Tomography: slicing the Universe
+
+                        Instead of assigning a single redshift to each galaxy, we group galaxies into **redshift bins** (tomographic bins):
+
+                        - Each bin represents a **slice of the Universe in distance**
+                        - Weak lensing is then measured **within and between these slices**
+                        - This adds **3D information** to what is otherwise a 2D sky map
+
+                        In this plot, each curve shows the **redshift distribution $dN/dz$** of galaxies in one tomographic bin.
+
+                        ### Why this matters
+
+                        Weak lensing is extremely sensitive to **where galaxies are located in redshift**:
+
+                        - If redshifts are biased → cosmological parameters become biased  
+                        - If uncertainties are large → constraints become weaker  
+
+                        For next-generation surveys like **[LSST DESC](https://lsstdesc.org/index.html)**,  
+                        we need to know the **mean redshift of each bin to very high precision**.
+
+
+                        💡 *In this simulation, we generate idealized redshift distributions using a simple model (Smail $dN/dz$), but real data is much more complex!*
+                        """)
+                    except Exception as e:
+                        st.error(f"Failed to compute tomographic bins: {e}")
+                    st.markdown("---")
+                    st.header("Simulated Convergence and Shear Maps")
+                    st.pyplot(fig)
+                    st.markdown("""
+                    ### Simulated Convergence and Shear Maps
+
+                    This figure shows a simulated view of the Universe through **weak gravitational lensing**.
+
+                    - **Convergence ($\kappa$)** represents the **projected mass distribution** along the line of sight.  
+                    Bright and dark regions indicate where matter (mostly dark matter) slightly magnifies or de-magnifies background galaxies.  
+                    You can think of this as a **map of invisible matter**.
+
+                    - **Shear ($\gamma_1, \gamma_2$)** describes how galaxy images are **stretched and distorted** by gravity.  
+                    Instead of changing size, shear changes the *shape* of galaxies, producing coherent alignment patterns across the sky.
+
+                    ### 🔍 How to interpret the maps
+
+                    - Large-scale smooth patterns → **cosmic structure (filaments, clusters, voids)**  
+                    - Small-scale fluctuations → **non-linear structure formation**  
+                    - Stronger contrast → more clustering, often linked to higher $\sigma_8$ or $\Omega_m$
+
+                    ### ⚙️ Technical notes
+
+                    These maps are generated using:
+
+                    - **Log-normal matter fields** to [approximate the cosmic density distribution](https://arxiv.org/abs/1105.3980)  
+                    - **Line-of-sight integration** to compute the lensing signal  
+                    - **Tomographic redshift distributions** to model realistic galaxy surveys  
+
+                    Together, this produces a realistic mock of what surveys like **[LSST DESC](https://arxiv.org/abs/1809.01669)** aim to measure.
+
+                    💡 *In real observations, individual galaxy shapes are noisy — the signal only appears statistically when averaging over millions of galaxies.*
+                    """)
+
+                    # Convergence power + shear correlations: combined 3-panel plot
+                    try:
                         sim_cls = hp.anafast(kappa_map, lmax=lmax)
                         ell = np.arange(len(sim_cls))
 
@@ -1772,87 +1991,163 @@ with tab4:
                         except Exception:
                             theory_kappa = None
 
-                        fig2, ax = plt.subplots(figsize=(6, 4))
-                        ax.plot(ell, sim_cls, '-k',
-                                label='Simulated kappa C_l')
-                        if theory_kappa is not None:
-                            # include HEALPix pixel window
-                            pw = hp.pixwin(nside, lmax=lmax)
-                            ax.plot(ell, theory_kappa * pw**2, '-r',
-                                    lw=1.5, label='Expected kappa C_l (CAMB)')
+                        # theta grid in degrees and radians for xi
+                        theta_deg = np.logspace(-2, 2, 50)
+                        theta_rad = np.deg2rad(theta_deg)
 
-                        ax.set_yscale('log')
-                        ax.set_xscale('log')
-                        ax.set_xlabel(r'$\ell$')
-                        ax.set_ylabel(r'$C_{\ell}$')
-                        ax.legend()
-                        st.pyplot(fig2)
+                        # Compute xi+ and xi- from C_l using Hankel transform (flat-sky approx.)
+                        from scipy.special import j0, jv
 
-                    # Tomographic bins and redshift distributions
-                    with st.expander("Show tomographic bins and redshift distributions"):
-                        try:
-                            z = np.arange(zmin, zmax, 0.01)
-                            # simple Smail et al. model parameters (exposed minimally)
-                            z_mode = 0.9
-                            alpha = 2.0
-                            beta = 1.5
-                            sigma_z0 = 0.03
+                        ell_int = ell[1:]
+                        Cl_int = sim_cls[1:]
 
-                            dndz = glass.smail_nz(z, z_mode=z_mode,
-                                                  alpha=alpha, beta=beta)
-                            dndz = dndz * n_arcmin2
+                        LTheta = np.outer(ell_int, theta_rad)
+                        J0 = j0(LTheta)
+                        J4 = jv(4, LTheta)
 
-                            nbins_int = int(nbins)
-                            zbins = glass.equal_dens_zbins(
-                                z, dndz, nbins=nbins_int)
-                            tomo_nz = glass.tomo_nz_gausserr(
-                                z, dndz, sigma_z0, zbins)
+                        integrand_plus = ell_int[:, None] * Cl_int[:, None] * J0
+                        integrand_minus = ell_int[:, None] * Cl_int[:, None] * J4
 
-                            fig3, ax3 = plt.subplots(figsize=(8, 4))
-                            for i in range(nbins_int):
-                                ax3.plot(z, (tomo_nz[i] / n_arcmin2) * nbins_int,
-                                         alpha=0.6, label=f"Input Bin {i}")
-                            ax3.plot(z, dndz / n_arcmin2 * nbins_int,
-                                     ls='--', c='k', label='Input Total Distribution')
-                            ax3.set_xlabel('Redshift z')
-                            ax3.set_ylabel('Normalized dN/dz')
-                            ax3.legend(ncol=2, fontsize=9)
-                            ax3.grid(True, ls=':')
-                            st.pyplot(fig3)
-                        except Exception as e:
-                            st.error(
-                                f"Failed to compute tomographic bins: {e}")
+                        xi_plus = np.trapz(integrand_plus, ell_int, axis=0) / (2.0 * np.pi)
+                        xi_minus = np.trapz(integrand_minus, ell_int, axis=0) / (2.0 * np.pi)
 
-                    # Shear correlation function (xi+)
-                    with st.expander("Show shear correlation function (xi+)"):
-                        try:
-                            sim_cls = hp.anafast(kappa_map, lmax=lmax)
-                            ell = np.arange(len(sim_cls))
-                            # theta grid in degrees
-                            theta_deg = np.logspace(-2, 2, 50)
-                            theta_rad = np.deg2rad(theta_deg)
+                        fig_comb, axes = plt.subplots(1, 3, figsize=(15, 4))
 
-                            from scipy.special import eval_legendre
+                        ax0 = axes[0]
+                        ax0.plot(ell, theory_kappa, '-k', label='Simulated kappa C_l')
+                        ax0.set_xscale('log')
+                        ax0.set_yscale('log')
+                        ax0.set_xlabel(r'$\ell$')
+                        ax0.set_ylabel(r'$C_{\ell}$')
+                        ax0.grid(True, ls=':')
 
-                            xi_plus = np.zeros_like(theta_rad)
-                            # sum over multipoles: xi+(theta)=sum (2l+1)/(4pi) C_l P_l(cos theta)
-                            for l in range(len(ell)):
-                                Cl = sim_cls[l]
-                                Pl = eval_legendre(l, np.cos(theta_rad))
-                                xi_plus += (2 * l + 1) / \
-                                    (4.0 * np.pi) * Cl * Pl
+                        ax1 = axes[1]
+                        ax1.semilogx(theta_deg, xi_plus, '-k')
+                        ax1.set_xlabel('Angular separation [deg]')
+                        ax1.set_ylabel(r'$\xi_{+}(\theta)$')
+                        ax1.grid(True, ls=':')
 
-                            fig4, ax4 = plt.subplots(figsize=(7, 4))
-                            ax4.semilogx(theta_deg, xi_plus, '-k')
-                            ax4.set_xlabel('Angular separation [deg]')
-                            ax4.set_ylabel(r'$\xi_{+}(\theta)$')
-                            ax4.grid(True, ls=':')
-                            st.pyplot(fig4)
-                        except Exception as e:
-                            st.error(
-                                f"Failed to compute correlation function: {e}")
+                        ax2 = axes[2]
+                        ax2.semilogx(theta_deg, xi_minus, '-k')
+                        ax2.set_xlabel('Angular separation [deg]')
+                        ax2.set_ylabel(r'$\xi_{-}(\theta)$')
+                        ax2.grid(True, ls=':')
+
+                        plt.tight_layout()
+                        st.markdown("---")
+                        st.header("Convergence Power Spectrum and Shear Correlation Functions")
+                        st.pyplot(fig_comb)
+                        st.markdown(r"""
+                        ### Convergence Power Spectrum and Shear Correlation Functions
+
+                        While maps are visually appealing, cosmology is extracted from **statistical summaries** of the lensing signal.
+
+                        Because individual galaxy shapes are noisy, we analyze how the signal is correlated across the sky.
+
+                        ### Convergence Power Spectrum $C_\ell$
+
+                        The **power spectrum** describes how lensing fluctuations depend on angular scale:
+
+                        - Large angular scales (small $\ell$) → probe **large cosmic structures**
+                        - Small angular scales (large $\ell$) → probe **galaxy clusters and non-linear structure**
+
+                        The amplitude and shape of $C_\ell$ are sensitive to cosmological parameters such as:
+
+                        - **$\Omega_m$** (matter density)  
+                        - **$\sigma_8$** (clustering strength)  
+
+                        ### Shear Correlation Functions $\xi_+(\theta)$ and $\xi_-(\theta)$
+
+                        Instead of Fourier space, we can also work directly in real space:
+
+                        - $\xi_{+}(\theta)$ measures how galaxy shapes are **aligned at separation $\theta$**
+                        - $\xi_{-}(\theta)$ captures more subtle, small-scale distortion patterns
+
+                        These functions are commonly used in real surveys because they are:
+
+                        - easier to measure with incomplete sky coverage  
+                        - directly related to observed galaxy pairs  
+
+
+                        ### Why both representations?
+
+                        - The **power spectrum** is convenient for theoretical predictions  
+                        - The **correlation functions** are closer to actual observations  
+
+                        They contain the same information, just expressed in different ways.
+
+
+                        💡 *Modern weak-lensing analyses combine these statistics across redshift bins to constrain the growth of structure and the nature of dark energy.*
+                    
+                        """)
+                                    
+                        
+                    except Exception as e:
+                        st.error(f"Failed to compute convergence/xi diagnostics: {e}")
 
                 except Exception as e:
                     st.error(f"GLASS simulation failed: {e}")
+                st.markdown("---")
+                st.markdown("""
+                ### 📚 Further Reading & References
+
+                The calculations in this section are based on the **ΛCDM model**, the current standard model of cosmology.  
+                We compute theoretical predictions using the **[GLASS](https://glass.readthedocs.io/stable/index.html)**, **[CAMB](https://camb.readthedocs.io/en/latest/)**, and **[HEALPi](https://healpix.sourceforge.io/)x**, a widely used tool in modern cosmology.
+
+                ---
+
+                ### 📖 Learn more
+
+                - *[Modern Cosmology by Scott Dodelson & Fabian Schmidt](https://www.amazon.co.uk/Modern-Cosmology-Scott-Dodelson/dp/0128159480)* — Scott Dodelson & Fabian Schmidt  
+
+                    👉 A comprehensive introduction to the theory behind these plots  
+                            
+                - *[Weak Gravitational Lensing](https://arxiv.org/abs/astro-ph/9912508)* - Matthias Bartelmann & Peter Schneider
+                            
+                    👉 Basic literature for gravitational lensing and weak lensing, detailed derivation of each formula.
+                           
+                - *[GLASS: Generator for Large Scale Structure](https://arxiv.org/abs/2302.01942)* - Nicole Tessore et al.
+                            
+                    👉 The original paper describing the GLASS pipeline for simulating weak lensing fields.
+                
+                - *[Cosmic shear covariance: The log-normal approximation](https://arxiv.org/abs/1105.3980)* - Stefan Hilbert, Jan Hartlap, Peter Schneider
+                - *[Improving lognormal models for cosmological fields](https://arxiv.org/abs/1602.08503)* - Henrique S. Xavier, Filipe B. Abdalla, Benjamin Joachimi
+                
+                    👉 Detail about the approximation which is used by this code
+                            
+                ---
+
+                ### ⚠️ Challenges and the Future of Weak Lensing
+
+                - **Stage III surveys** (e.g. [DES](https://www.darkenergysurvey.org/), [KiDS](https://kids.strw.leidenuniv.nl/), [HSC](https://hsc.mtk.nao.ac.jp/ssp/)) have measured cosmic shear with high precision,  
+
+                but results show mild tension with CMB constraints.
+
+                - **$S_8$ tension**: weak-lensing surveys often find a lower value of  
+
+                $S_8 = \sigma_8 \sqrt{\Omega_m / 0.3}$ compared to CMB measurements.  
+
+                This could indicate new physics or unaccounted systematic effects.
+
+                - **Systematic uncertainties** remain a major challenge, including:
+
+                - photometric redshift errors,
+
+                - intrinsic alignments of galaxies,
+
+                - observational effects (PSF, noise, masking),
+
+                - and spatial selection effects.
+
+                - **Stage IV surveys** (e.g. [LSST](https://www.lsst.org/), [Euclid](https://www.esa.int/Science_Exploration/Space_Science/Euclid)) aim to:
+
+                - dramatically improve statistical precision,
+
+                - control systematics at unprecedented levels,
+
+                - and enable high-precision tests of cosmology and dark energy.
+                            
+                """)
+
 st.markdown("---")
-st.markdown("Developed for lunch seminar by Rintaro Kanaki. © 2025")
+st.markdown("Developed for lunch seminar by Rintaro Kanaki. © 2026")

@@ -4,9 +4,9 @@ scipy
 matplotlib
 healpy
 qrcode
-camb
+camb==1.6.0
 cosmology.compat.camb
-glass>=2023.0
+glassglass==2025.1
 classy
 glass.ext.camb
 cosmology

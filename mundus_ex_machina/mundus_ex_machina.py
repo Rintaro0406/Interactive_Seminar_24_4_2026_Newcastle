@@ -1606,7 +1606,7 @@ with tab3:
             KR = np.outer(kk, R_vals)  # shape (nk, nR)
             W = W_tophat(KR)
             integrand = (kk[:, None]**2) * Pk_vals[:, None] * W**2
-            sigma2 = np.trapz(integrand, kk, axis=0) / (2.0 * np.pi**2)
+            sigma2 = np.trapezoid(integrand, kk, axis=0) / (2.0 * np.pi**2)
             sigma0 = np.sqrt(sigma2)
             lns = np.log(sigma0)
             lnM = np.log(M_vals)
@@ -1989,9 +1989,6 @@ with tab4:
                         theta_deg = np.logspace(-2, 2, 50)
                         theta_rad = np.deg2rad(theta_deg)
 
-                        # Compute xi+ and xi- from C_l using Hankel transform (flat-sky approx.)
-                        from scipy.special import j0, jv
-
                         ell_int = ell[1:]
                         Cl_int = sim_cls[1:]
 
@@ -2002,8 +1999,8 @@ with tab4:
                         integrand_plus = ell_int[:, None] * Cl_int[:, None] * J0
                         integrand_minus = ell_int[:, None] * Cl_int[:, None] * J4
 
-                        xi_plus = np.trapz(integrand_plus, ell_int, axis=0) / (2.0 * np.pi)
-                        xi_minus = np.trapz(integrand_minus, ell_int, axis=0) / (2.0 * np.pi)
+                        xi_plus = np.trapzoid(integrand_plus, ell_int, axis=0) / (2.0 * np.pi)
+                        xi_minus = np.trapzoid(integrand_minus, ell_int, axis=0) / (2.0 * np.pi)
 
                         fig_comb, axes = plt.subplots(1, 3, figsize=(15, 4))
 

@@ -12,7 +12,7 @@ from scipy import integrate
 import glass
 import matplotlib.ticker as ticker
 import camb
-from glass.cosmology import Cosmology
+from camb.cosmology import Cosmology
 import glass
 import glass.ext.camb
 from scipy.special import j0, jv

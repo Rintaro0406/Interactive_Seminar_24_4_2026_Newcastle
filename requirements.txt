@@ -6,7 +6,7 @@ healpy
 qrcode
 camb==1.6.0
 cosmology.compat.camb
-glassglass==2025.1
+glass==2025.1
 classy
 glass.ext.camb
 cosmology

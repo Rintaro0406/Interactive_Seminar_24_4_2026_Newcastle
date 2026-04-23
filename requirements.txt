@@ -9,3 +9,4 @@ cosmology.compat.camb
 glass>=2023.0
 classy
 glass.ext.camb
+cosmology

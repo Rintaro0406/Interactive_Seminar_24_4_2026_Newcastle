@@ -156,8 +156,8 @@ with tab1:
 
     👉 Use the controls left to see how changing **cosmological parameters** affects the evolution of the Universe.
     """)
-    use_basics = st.checkbox("Calculate Basics", value=False)
     st.markdown("---")
+    use_basics = st.checkbox("Calculate Basics", value=False)
     if use_basics:
         st.header("Hubble Parameter")
         st.markdown("""
@@ -783,6 +783,7 @@ with tab1:
         - [BOSS DR12](https://arxiv.org/abs/1607.03155) — Galaxy clustering and BAO  
         - [eBOSS DR14](https://arxiv.org/abs/1910.10395) — Quasars and Lyman-$\\alpha$ forest  
         """)
+    st.markdown("---")
 # cmb
 with tab2:
     st.header("Cosmic Microwave Background")

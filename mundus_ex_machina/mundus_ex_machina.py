@@ -865,7 +865,7 @@ with tab2:
         # Load Planck 2018 TT data
         show_obs_data = st.checkbox("Show Planck 2018 TT Data", value=False)
         planck_data = np.loadtxt(
-            '/Users/r.kanaki/code/lunch_seminar/Data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
+            '../data/COM_PowerSpect_CMB-TT-full_R3.01.txt')
         ell_data = planck_data[:, 0]
         cl_data = planck_data[:, 1]
         cl_err_plus = planck_data[:, 2]

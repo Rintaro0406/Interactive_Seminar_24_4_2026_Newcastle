@@ -58,13 +58,13 @@ with left_col:
     - **Weak Lensing**: See how gravity bends light from distant galaxies, slightly distorting their shapes. We simulate these effects to map invisible matter like dark matter.  
     💡*What you learn:* How we “see” dark matter and trace the structure of the Universe through gravity.
     """)
-    st.markdown(r"""
+    st.markdown("""
     ### About this App
     - **Model**:  
     We adopt the **flat $\mathrm{\Lambda}$CDM model**, the current standard model of cosmology.  
     In this framework, the Universe is:
     - **Flat** (its geometry follows Euclidean geometry on large scales),  
-    - Dominated by **dark energy (Λ)**, which drives the accelerated expansion,  
+    - Dominated by **dark energy ($\mathrm{\Lambda}$)**, which drives the accelerated expansion,  
     - And composed of **cold dark matter (CDM)**, which forms the backbone of cosmic structure.  
     This model successfully explains a wide range of observations, including the Cosmic Microwave Background, galaxy clustering, and the expansion history of the Universe.  
     Advanced extensions (such as massive neutrinos or evolving dark energy) can be explored in future versions.

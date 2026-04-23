@@ -52,9 +52,6 @@ This repository contains materials for the AstroObs interactive seminar (April 2
 
 5. Open the app in your browser at the URL shown by Streamlit (typically http://localhost:8501).
 
-
-If you'd like, I can add the QR image you uploaded into `assets/qr_app_link.png` and replace `<APP_URL>` with the actual link — tell me if you want me to do that.
-
 ## Notes
 - The repository was prepared for teaching and demonstration; some notebooks include developer notes you can adapt.
 

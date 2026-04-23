@@ -1999,8 +1999,8 @@ with tab4:
                         integrand_plus = ell_int[:, None] * Cl_int[:, None] * J0
                         integrand_minus = ell_int[:, None] * Cl_int[:, None] * J4
 
-                        xi_plus = np.trapzoid(integrand_plus, ell_int, axis=0) / (2.0 * np.pi)
-                        xi_minus = np.trapzoid(integrand_minus, ell_int, axis=0) / (2.0 * np.pi)
+                        xi_plus = np.trapezoid(integrand_plus, ell_int, axis=0) / (2.0 * np.pi)
+                        xi_minus = np.trapezoid(integrand_minus, ell_int, axis=0) / (2.0 * np.pi)
 
                         fig_comb, axes = plt.subplots(1, 3, figsize=(15, 4))
 

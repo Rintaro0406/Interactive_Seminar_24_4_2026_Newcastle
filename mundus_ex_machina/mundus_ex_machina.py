@@ -933,7 +933,7 @@ with tab2:
 
         ax.set_xlabel(r'Multipole $\ell$', fontsize=16)
         ax.set_ylabel(
-            r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi\ [\mu K^2]$', fontsize=16)
+            r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi [\mu K^2]$', fontsize=16)
         ax.grid(True, which='both', ls='--', alpha=0.4)
         ax.tick_params(labelsize=14)
         ax.legend(fontsize=16, loc='upper right', frameon=False)

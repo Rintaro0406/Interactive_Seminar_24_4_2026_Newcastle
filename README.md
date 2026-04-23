@@ -13,6 +13,12 @@ This repository contains materials for the AstroObs interactive seminar (April 2
   - Introduction to Streamlit (Can you modify hier, Devang?)
   - Example analysis using Gaussian processes
 
+## QR Code
+
+- **Scan to open the app:** If you have a QR image for the application link, place it at `assets/qr_app_link.png` and it will be displayed here. You can embed it as a link to the running app using the following Markdown (replace <APP_URL> with the app URL):
+
+  [![QR code for the app](assets/qr_app_link.png)](<https://interactiveseminar2442026newcastle-q7bxxkdrwkxxefeujetafd.streamlit.app/>)
+
 ## How to run
 
 1. Clone the repository (replace <repository-url> with this repo's URL):
@@ -25,7 +31,7 @@ This repository contains materials for the AstroObs interactive seminar (April 2
 2. Create and activate a Python environment (Conda recommended):
 
     ```bash
-    conda create -n interactive_seminar_env python=3.9 -y
+    conda create -n interactive_seminar_env python=3.14 -y
     conda activate interactive_seminar_env
     ```
 
@@ -37,37 +43,32 @@ This repository contains materials for the AstroObs interactive seminar (April 2
     pip install -r requirements.txt
     ```
 
-4. Install `classy` (Python wrapper for CLASS) if needed:
-
-    ```bash
-    pip install classy
-    ```
-
-5. If you need the CLASS Fortran code (used by `classy`), clone and build it:
-
-    ```bash
-    git clone https://github.com/lesgourg/class_public.git
-    cd class_public
-    make
-    cd ..
-    ```
-
-6. Run the Streamlit app:
+4. Run the Streamlit app:
 
     ```bash
     cd mundus_ex_machina
     streamlit run mundus_ex_machina.py
     ```
 
-7. Open the app in your browser at the URL shown by Streamlit (typically http://localhost:8501).
+5. Open the app in your browser at the URL shown by Streamlit (typically http://localhost:8501).
+
+
+If you'd like, I can add the QR image you uploaded into `assets/qr_app_link.png` and replace `<APP_URL>` with the actual link — tell me if you want me to do that.
 
 ## Notes
 - The repository was prepared for teaching and demonstration; some notebooks include developer notes you can adapt.
-- If you run into missing dependencies or build issues for CLASS, consult the CLASS and classy documentation:
-  - https://github.com/lesgourg/class_public
-  - https://github.com/lesgourg/class_public/tree/master/CLASS
 
-If you'd like, I can also:
-- update any notebook headers/metadata for clarity
-- add a minimal `requirements.txt` snippet or environment YAML
-- run a quick local test (if you want me to start the app here)
+# Important links
+
+### Visualization packages
+- **Matplotlib:** [https://matplotlib.org/](https://matplotlib.org/) — A mature 2D plotting library for publication-quality figures, animations, and interactive use in notebooks.
+- **Streamlit:** [https://streamlit.io/](https://streamlit.io/) — Simple framework for building interactive data apps and dashboards with minimal code.
+- **Plotly:** [https://plotly.com/](https://plotly.com/) — Interactive, web-ready plotting library (Plotly.py) for rich graphs and dashboards.
+- **Dash:** [https://dash.plotly.com/](https://dash.plotly.com/) — Framework for building analytical web applications using Plotly visualizations and React components.
+- **Bokeh:** [https://bokeh.org/](https://bokeh.org/) — Library for creating interactive, browser-based visualizations with high-performance streaming.
+
+### Cosmology & astrophysics packages
+- **healpy:** [https://healpy.readthedocs.io/en/latest/](https://healpy.readthedocs.io/en/latest/) — Python interface to HEALPix for working with full-sky maps (CMB, foregrounds) and spherical harmonics.
+- **CLASS:** [http://class-code.net/](http://class-code.net/) — Boltzmann solver for computing cosmological observables (CMB, matter power spectra); often used via `classy` Python wrapper.
+- **CAMB:** [https://camb.info/](https://camb.info/) — Code for Anisotropies in the Microwave Background; alternative Boltzmann solver for linear matter/CMB calculations.
+- **GLASS:** [https://glass.readthedocs.io/stable/index.html](https://glass.readthedocs.io/stable/index.html) — Tools for glass/galaxy lensing and survey simulations (check project docs for specific modules).

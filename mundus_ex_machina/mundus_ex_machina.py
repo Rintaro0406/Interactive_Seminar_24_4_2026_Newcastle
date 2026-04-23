@@ -9,12 +9,10 @@ from io import BytesIO
 from matplotlib.patches import FancyArrowPatch
 from scipy import interpolate
 from scipy import integrate
-import camb
 import glass
-from cosmology import Cosmology
 import matplotlib.ticker as ticker
 import camb
-from cosmology import Cosmology
+from glass.cosmology import Cosmology
 import glass
 import glass.ext.camb
 from scipy.special import j0, jv

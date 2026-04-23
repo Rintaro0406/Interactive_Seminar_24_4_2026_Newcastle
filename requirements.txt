@@ -5,6 +5,7 @@ matplotlib
 healpy
 qrcode
 camb
+cosmology.compat.camb
 glass>=2023.0
 classy
 glass.ext.camb

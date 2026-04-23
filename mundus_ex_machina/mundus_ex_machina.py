@@ -58,7 +58,7 @@ with left_col:
     - **Weak Lensing**: See how gravity bends light from distant galaxies, slightly distorting their shapes. We simulate these effects to map invisible matter like dark matter.  
     💡*What you learn:* How we “see” dark matter and trace the structure of the Universe through gravity.
     """)
-    st.markdown("""
+    st.markdown(r"""
     ### About this App
     - **Model**:  
     We adopt the **flat $\mathrm{\Lambda}$CDM model**, the current standard model of cosmology.  

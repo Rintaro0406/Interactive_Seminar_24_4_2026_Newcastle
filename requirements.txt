@@ -7,3 +7,4 @@ qrcode
 camb
 glass
 classy
+glass.ext.camb

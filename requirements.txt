@@ -11,3 +11,9 @@ classy
 glass.ext.camb
 cosmology
 pathlib
+IPython
+plotly
+bokeh
+jax
+seaborn
+sklearn

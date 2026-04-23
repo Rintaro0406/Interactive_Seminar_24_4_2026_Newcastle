@@ -64,7 +64,7 @@ with left_col:
     We adopt the **flat $\mathrm{\Lambda}$CDM model**, the current standard model of cosmology.  
     In this framework, the Universe is:
     - **Flat** (its geometry follows Euclidean geometry on large scales),  
-    - Dominated by **dark energy ($\mathrm{\Lambda}$)**, which drives the accelerated expansion,  
+    - Dominated by **dark energy (Λ)**, which drives the accelerated expansion,  
     - And composed of **cold dark matter (CDM)**, which forms the backbone of cosmic structure.  
     This model successfully explains a wide range of observations, including the Cosmic Microwave Background, galaxy clustering, and the expansion history of the Universe.  
     Advanced extensions (such as massive neutrinos or evolving dark energy) can be explored in future versions.
@@ -933,7 +933,7 @@ with tab2:
 
         ax.set_xlabel(r'Multipole $\ell$', fontsize=16)
         ax.set_ylabel(
-            r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi [\mu K^2]$', fontsize=16)
+            r'$\ell(\ell+1)C_{\ell}^{TT}/2\pi\ [\mu K^2]$', fontsize=16)
         ax.grid(True, which='both', ls='--', alpha=0.4)
         ax.tick_params(labelsize=14)
         ax.legend(fontsize=16, loc='upper right', frameon=False)

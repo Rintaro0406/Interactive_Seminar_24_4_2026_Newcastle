@@ -9,9 +9,9 @@ This repository contains materials for the AstroObs interactive seminar (April 2
   - Galaxy clustering
   - Weak gravitational lensing
 - **Notebooks**:
-  - Interactive plotting and animation examples (matplotlib, Plotly, Bokeh) using the matter power spectrum
-  - Introduction to Streamlit (Can you modify hier, Devang?)
-  - Example analysis using Gaussian processes
+  - **Example_Powerspectrum.ipynb**: Interactive plotting and animation examples (matplotlib, Plotly, Bokeh) using the matter power spectrum
+  - **streamlit_starter.py**: Easy example about streamlit.
+  - **Example_Gaussian_Mixture.ipynb**: Example analysis using Gaussian Mixture Model
 
 ## QR Code
 

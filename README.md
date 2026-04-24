@@ -10,8 +10,9 @@ This repository contains materials for the AstroObs interactive seminar (April 2
   - Weak gravitational lensing
 - **Notebooks**:
   - **Example_Powerspectrum.ipynb**: Interactive plotting and animation examples (matplotlib, Plotly, Bokeh) using the matter power spectrum
-  - **streamlit_starter.py**: Easy example about streamlit.
   - **Example_Gaussian_Mixture.ipynb**: Example analysis using Gaussian Mixture Model
+- **streamlit_example**:
+  - **streamlit_starter.py**: Easy example about streamlit.
 
 ## QR Code
 
